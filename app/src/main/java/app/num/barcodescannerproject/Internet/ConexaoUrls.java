@@ -1,4 +1,4 @@
-package app.num.barcodescannerproject.Conexao;
+package app.num.barcodescannerproject.Internet;
 
 import android.os.StrictMode;
 
