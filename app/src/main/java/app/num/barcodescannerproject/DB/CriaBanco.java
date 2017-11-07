@@ -48,6 +48,12 @@ public class CriaBanco {
 
         BancoDeDados.execSQL(SQL);
 
+        //Tabela de Informações do Filme
+        SQL = " CREATE TABLE IF NOT EXISTS INFO_FILMES ( _id INTEGER PRIMARY KEY,NOME_FILME TEXT ," +
+                "SITE_OFICI TEXT, POSTER TEXT); \n\n";
+
+        BancoDeDados.execSQL(SQL);
+
 
         return true;
 
