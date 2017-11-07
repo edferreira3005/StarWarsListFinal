@@ -1,22 +1,27 @@
 package app.num.barcodescannerproject.Telas;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.MergeCursor;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import app.num.barcodescannerproject.Customizacao.CustomCursorAdapter;
 import app.num.barcodescannerproject.DB.ManipulaBanco;
 import app.num.barcodescannerproject.R;
 
 public class InfoActivity extends Activity{
 
     SimpleCursorAdapter AdapterLista;
+    public static CustomCursorAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +54,8 @@ public class InfoActivity extends Activity{
         MainActivity main = new MainActivity();
         ManipulaBanco select = new ManipulaBanco();
 
-        Cursor InfoBasic = select.Select_Info_Basica(main.id_personagem,main.BancoDeDados);
-        Cursor Filmes = select.Select_Filmes(main.id_personagem,main.BancoDeDados);
+        final Cursor InfoBasic = select.Select_Info_Basica(main.id_personagem,main.BancoDeDados);
+        final Cursor Filmes = select.Select_InfoFilmes(main.BancoDeDados);
         Cursor Especie = select.Select_Especie(main.id_personagem,main.BancoDeDados);
         Cursor Veiculos = select.Select_Veiculos(main.id_personagem,main.BancoDeDados);
         Cursor Naves_Espaciais = select.Select_Nave_Espacial(main.id_personagem,main.BancoDeDados);
@@ -81,17 +86,11 @@ public class InfoActivity extends Activity{
         }
 
         //Filmes
-        Log.i("filmes", "" + Filmes.getCount());
+
         if (Filmes.getCount() > 0) {
 
-            Filmes.moveToFirst();
-
-            final String[] coluna = new String[]{"NOME_FILME"};
-
-            AdapterLista = new SimpleCursorAdapter(this, R.layout.mostra_banco, Filmes,
-                    coluna, new int[]{R.id.tvCarregaDado});
-
-            lvFilmes.setAdapter(AdapterLista);
+            adapter = new CustomCursorAdapter(getBaseContext(), Filmes);
+            lvFilmes.setAdapter(adapter);
 
             lvFilmes.setOnItemClickListener(
                     new AdapterView.OnItemClickListener() {
@@ -100,7 +99,14 @@ public class InfoActivity extends Activity{
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
+                            try {
+                                Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Filmes.getString(2)));
+                                startActivity(myIntent);
+                            } catch (ActivityNotFoundException e) {
+                                Toast.makeText(InfoActivity.this, "No application can handle this request."
+                                        + " Please install a webbrowser",  Toast.LENGTH_LONG).show();
+                                e.printStackTrace();
+                            }
 
                         }
                     }

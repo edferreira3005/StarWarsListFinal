@@ -191,31 +191,47 @@ public class ManipulaBanco {
             JSONObject jsonObj_Fil8 = new JSONObject(InfoFilme8);
 
             Bitmap bPoster_Filme1 = down.getBitmapFromURL("http://image.tmdb.org/t/p/w185/" + jsonObj_Fil1.getString("poster_path").trim());
+            Log.i("url img" ,"http://image.tmdb.org/t/p/w185/" + jsonObj_Fil1.getString("poster_path").trim());
             Bitmap bPoster_Filme2 = down.getBitmapFromURL("http://image.tmdb.org/t/p/w185/" + jsonObj_Fil2.getString("poster_path").trim());
+            Log.i("url img" ,"http://image.tmdb.org/t/p/w185/" + jsonObj_Fil2.getString("poster_path").trim());
             Bitmap bPoster_Filme3 = down.getBitmapFromURL("http://image.tmdb.org/t/p/w185/" + jsonObj_Fil3.getString("poster_path").trim());
+            Log.i("url img" ,"http://image.tmdb.org/t/p/w185/" + jsonObj_Fil3.getString("poster_path").trim());
             Bitmap bPoster_Filme4 = down.getBitmapFromURL("http://image.tmdb.org/t/p/w185/" + jsonObj_Fil4.getString("poster_path").trim());
+            Log.i("url img" ,"http://image.tmdb.org/t/p/w185/" + jsonObj_Fil4.getString("poster_path").trim());
             Bitmap bPoster_Filme5 = down.getBitmapFromURL("http://image.tmdb.org/t/p/w185/" + jsonObj_Fil5.getString("poster_path").trim());
+            Log.i("url img" ,"http://image.tmdb.org/t/p/w185/" + jsonObj_Fil5.getString("poster_path").trim());
             Bitmap bPoster_Filme6 = down.getBitmapFromURL("http://image.tmdb.org/t/p/w185/" + jsonObj_Fil6.getString("poster_path").trim());
+            Log.i("url img" ,"http://image.tmdb.org/t/p/w185/" + jsonObj_Fil6.getString("poster_path").trim());
             Bitmap bPoster_Filme7 = down.getBitmapFromURL("http://image.tmdb.org/t/p/w185/" + jsonObj_Fil7.getString("poster_path").trim());
+            Log.i("url img" ,"http://image.tmdb.org/t/p/w185/" + jsonObj_Fil7.getString("poster_path").trim());
             Bitmap bPoster_Filme8 = down.getBitmapFromURL("http://image.tmdb.org/t/p/w185/" + jsonObj_Fil8.getString("poster_path").trim());
+            Log.i("url img" ,"http://image.tmdb.org/t/p/w185/" + jsonObj_Fil8.getString("poster_path").trim());
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bPoster_Filme1.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
             byte[] byteArray1 = byteArrayOutputStream .toByteArray();
+            byteArrayOutputStream = new ByteArrayOutputStream();
             bPoster_Filme2.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
             byte[] byteArray2 = byteArrayOutputStream .toByteArray();
+            byteArrayOutputStream = new ByteArrayOutputStream();
             bPoster_Filme3.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
             byte[] byteArray3 = byteArrayOutputStream .toByteArray();
+            byteArrayOutputStream = new ByteArrayOutputStream();
             bPoster_Filme4.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
             byte[] byteArray4 = byteArrayOutputStream .toByteArray();
+            byteArrayOutputStream = new ByteArrayOutputStream();
             bPoster_Filme5.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
             byte[] byteArray5 = byteArrayOutputStream .toByteArray();
+            byteArrayOutputStream = new ByteArrayOutputStream();
             bPoster_Filme6.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
             byte[] byteArray6 = byteArrayOutputStream .toByteArray();
+            byteArrayOutputStream = new ByteArrayOutputStream();
             bPoster_Filme7.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
             byte[] byteArray7 = byteArrayOutputStream .toByteArray();
+            byteArrayOutputStream = new ByteArrayOutputStream();
             bPoster_Filme8.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
             byte[] byteArray8 = byteArrayOutputStream .toByteArray();
+            byteArrayOutputStream = null;
 
             String Poster_Filme1 = Base64.encodeToString(byteArray1, Base64.DEFAULT);
             String Poster_Filme2 = Base64.encodeToString(byteArray2, Base64.DEFAULT);
@@ -226,7 +242,10 @@ public class ManipulaBanco {
             String Poster_Filme7 = Base64.encodeToString(byteArray7, Base64.DEFAULT);
             String Poster_Filme8 = Base64.encodeToString(byteArray8, Base64.DEFAULT);
 
-            String SQL = "INSERT INTO INFO_FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
+            String SQL = "DELETE FROM INFO_FILMES;";
+            BancoDeDados.execSQL(SQL);
+
+            SQL = "INSERT INTO INFO_FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
                           " VALUES('" + jsonObj_Fil1.get("original_title") + "','" + jsonObj_Fil1.get("homepage") + "'" +
                     ",'" + Poster_Filme1 + "');";
             BancoDeDados.execSQL(SQL);
@@ -388,6 +407,23 @@ public class ManipulaBanco {
                 "                             A.ID_PERSONAGEM = " + id_personagem +
                 "                        ORDER " +
                 "                            BY A.NOME_VEICULO", null);
+
+        return cursor;
+    }
+
+    public Cursor Select_InfoFilmes(SQLiteDatabase BancoDeDados){
+
+        Cursor cursor;
+
+        cursor = BancoDeDados.rawQuery("SELECT " +
+                "                            A._id," +
+                "                            A.NOME_FILME," +
+                "                            SITE_OFICI," +
+                "                            POSTER " +
+                "                        FROM " +
+                "                           INFO_FILMES A" +
+                "                        ORDER " +
+                "                            BY A.NOME_FILME", null);
 
         return cursor;
     }
