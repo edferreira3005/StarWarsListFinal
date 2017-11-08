@@ -1,10 +1,16 @@
 package app.num.barcodescannerproject.DB;
 
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,6 +20,9 @@ import java.io.ByteArrayOutputStream;
 
 import app.num.barcodescannerproject.Internet.ConexaoUrls;
 import app.num.barcodescannerproject.Internet.Download;
+import app.num.barcodescannerproject.R;
+import app.num.barcodescannerproject.Telas.InfoActivity;
+import app.num.barcodescannerproject.Telas.MainActivity;
 
 /**
  * Created by edson.ferreira on 06/11/2017.
@@ -426,6 +435,45 @@ public class ManipulaBanco {
                 "                            BY A.NOME_FILME", null);
 
         return cursor;
+    }
+
+    public void atualizaLista(ListView listaPersonagem, SQLiteDatabase BancoDeDados
+                               , final Context context){
+
+        final Cursor personagens = BancoDeDados.rawQuery("SELECT A._id, A.NOME_PERSONA FROM PERSONAGEM A" +
+                " ORDER BY A.NOME_PERSONA", null);
+
+        final String[] coluna = new String[]{"NOME_PERSONA"};
+        SimpleCursorAdapter AdapterLista;
+
+        if (personagens.getCount() > 0) {
+
+            personagens.moveToFirst();
+
+            AdapterLista = new SimpleCursorAdapter(context, R.layout.mostra_banco, personagens,
+                    coluna, new int[]{R.id.tvCarregaDado});
+
+            listaPersonagem.setAdapter(AdapterLista);
+
+            listaPersonagem.setOnItemClickListener(
+                    new AdapterView.OnItemClickListener() {
+
+
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            MainActivity main = new MainActivity();
+
+                            main.id_personagem = personagens.getInt(0);
+
+                            context.startActivity(new Intent(context, InfoActivity.class));
+
+                        }
+                    }
+
+            );
+
+        }
+
     }
 
 }
