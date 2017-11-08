@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="Nome de Usuário:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="64dp"
+        android:id="@+id/tvUs"
+        android:layout_below="@+id/logoLogin"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/etNomeUs"
+        android:layout_marginLeft="7dp"
+        android:layout_marginStart="7dp"
+        android:layout_alignBaseline="@+id/tvUs"
+        android:layout_alignBottom="@+id/tvUs"
+        android:layout_toRightOf="@+id/tvUs"
+        android:layout_toEndOf="@+id/tvUs" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:srcCompat="@drawable/logo_star_wars_app"
+        android:id="@+id/logoLogin"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_media_play"
+        android:layout_marginTop="42dp"
+        android:id="@+id/btnLogin"
+        android:layout_below="@+id/etNomeUs"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

@@ -1,7 +1,5 @@
 package app.num.barcodescannerproject.Telas;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -21,30 +19,25 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
     private ZXingScannerView mScannerView;
-    public static SQLiteDatabase BancoDeDados = null;
-    static String NomeBanco = "StarWarsList";
     CriaBanco cria = new CriaBanco();
     ListView lvPersonagens;
     public static int id_personagem;
 
     boolean doubleBackToExitPressedOnce = false;
     ManipulaBanco inser = new ManipulaBanco();
+    LoginInicioActivity login = new LoginInicioActivity();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
-        //Criando o Banco de dados
-        BancoDeDados = openOrCreateDatabase(NomeBanco, Context.MODE_PRIVATE, null);
-
-
-        if (cria.criaBanco(BancoDeDados)) {
+        if (cria.criaBanco(login.BancoDeDados)) {
             setContentView(R.layout.activity_main);
 
             //Atualizando Lista ao Abrir Aplicativos
             lvPersonagens = (ListView) findViewById(R.id.lvPersonagens);
-            inser.atualizaLista(lvPersonagens, BancoDeDados, getApplicationContext());
+            inser.atualizaLista(lvPersonagens, login.BancoDeDados, MainActivity.this);
 
 
             //Verificando permissões do aplicativo
@@ -75,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     public void handleResult(Result rawResult) {
 
         //Voltando para tela inicial
-        if (cria.criaBanco(BancoDeDados)) {
+        if (cria.criaBanco(login.BancoDeDados)) {
 
             setContentView(R.layout.activity_main);
 
@@ -86,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             lvPersonagens = (ListView) findViewById(R.id.lvPersonagens);
             ManipulaBanco inser = new ManipulaBanco();
 
-            new SincronizaDados(BancoDeDados, url,lvPersonagens,inser,getApplicationContext()).execute();
+            new SincronizaDados(login.BancoDeDados, url,lvPersonagens,inser,MainActivity.this).execute();
         }
     }
 
@@ -100,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             setContentView(R.layout.activity_main);
             //Atualizando Lista
             lvPersonagens = (ListView) findViewById(R.id.lvPersonagens);
-            inser.atualizaLista(lvPersonagens, BancoDeDados, getApplicationContext());
+            inser.atualizaLista(lvPersonagens, login.BancoDeDados, MainActivity.this);
         }
 
         this.doubleBackToExitPressedOnce = true;

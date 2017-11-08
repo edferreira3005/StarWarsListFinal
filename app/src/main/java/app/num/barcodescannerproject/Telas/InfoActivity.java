@@ -51,15 +51,16 @@ public class InfoActivity extends Activity{
         ListView lvVeicNave = (ListView) findViewById(R.id.lvVeicNave);
 
         //Buscando Banco de Dados Principal e Campos no banco de dados para visualização
+        LoginInicioActivity login = new LoginInicioActivity();
         MainActivity main = new MainActivity();
         ManipulaBanco select = new ManipulaBanco();
 
-        final Cursor InfoBasic = select.Select_Info_Basica(main.id_personagem,main.BancoDeDados);
-        final Cursor Filmes = select.Select_InfoFilmes(main.BancoDeDados);
-        Cursor Especie = select.Select_Especie(main.id_personagem,main.BancoDeDados);
-        Cursor Veiculos = select.Select_Veiculos(main.id_personagem,main.BancoDeDados);
-        Cursor Naves_Espaciais = select.Select_Nave_Espacial(main.id_personagem,main.BancoDeDados);
-        Cursor Personagem = select.Select_Personagem(main.id_personagem,main.BancoDeDados);
+        final Cursor InfoBasic = select.Select_Info_Basica(main.id_personagem,login.BancoDeDados);
+        final Cursor Filmes = select.Select_Persona_Filmes(main.id_personagem,login.BancoDeDados);
+        Cursor Especie = select.Select_Especie(main.id_personagem,login.BancoDeDados);
+        Cursor Veiculos = select.Select_Veiculos(main.id_personagem,login.BancoDeDados);
+        Cursor Naves_Espaciais = select.Select_Nave_Espacial(main.id_personagem,login.BancoDeDados);
+        Cursor Personagem = select.Select_Personagem(main.id_personagem,login.BancoDeDados);
 
         if(Personagem.getCount() > 0){
 

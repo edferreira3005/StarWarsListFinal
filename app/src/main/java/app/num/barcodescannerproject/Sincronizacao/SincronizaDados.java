@@ -20,7 +20,7 @@ public class SincronizaDados  extends AsyncTask<Void, Void, Void> {
         ListView Lista_Personagem;
         ManipulaBanco inser;
         Context context;
-        ProgressDialog carregar = new ProgressDialog(context);
+        ProgressDialog carregar;
 
         public SincronizaDados(SQLiteDatabase BancoDeDados, String url , ListView Lista_Personagem,
                                ManipulaBanco inser, Context context){
@@ -30,6 +30,7 @@ public class SincronizaDados  extends AsyncTask<Void, Void, Void> {
             this.Lista_Personagem = Lista_Personagem;
             this.inser = inser;
             this.context = context;
+            carregar = new ProgressDialog(context);
 
         }
 
@@ -55,7 +56,9 @@ public class SincronizaDados  extends AsyncTask<Void, Void, Void> {
         protected  void onPreExecute()
         {
 
-            carregar.setMessage("Carregando dados. Aguarde...");
+            carregar.setTitle("AGUARDE...");
+            carregar.setMessage("Carregando dados.");
+            carregar.setCancelable(false);
             carregar.show();
 
 

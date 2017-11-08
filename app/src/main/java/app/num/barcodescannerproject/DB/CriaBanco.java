@@ -12,7 +12,7 @@ public class CriaBanco {
     public boolean criaBanco( SQLiteDatabase BancoDeDados ){
 
         //Tabela do Usuário
-        SQL = " CREATE TABLE IF NOT EXISTS USUARIO ( _id INTEGER PRIMARY KEY,NOME_USUARIO TEXT); \n\n ";
+        SQL = " CREATE TABLE IF NOT EXISTS USUARIO ( _id INTEGER PRIMARY KEY,NOME_USUARIO TEXT, ULTIMO_US TEXT); \n\n ";
         BancoDeDados.execSQL(SQL);
 
         //Tabela do Personagem
@@ -26,9 +26,10 @@ public class CriaBanco {
              " ANO_NASCIMENTO TEXT, GENERO TEXT, MUNDO_NATAL TEXT, ANO_CRIACAO DATE, ANO_EDIT DATE ); \n\n";
         BancoDeDados.execSQL(SQL);
 
-        //Tabela de Filmes
-        SQL = " CREATE TABLE IF NOT EXISTS FILMES ( _id INTEGER PRIMARY KEY,ID_PERSONAGEM INT ," +
-                "NOME_FILME TEXT, URL TEXT); \n\n";
+        //Tabela de Informações do Filme
+        SQL = " CREATE TABLE IF NOT EXISTS FILMES ( _id INTEGER PRIMARY KEY,NOME_FILME TEXT ," +
+                "SITE_OFICI TEXT, POSTER TEXT); \n\n";
+
         BancoDeDados.execSQL(SQL);
 
         //Tabela de Veículos
@@ -48,10 +49,10 @@ public class CriaBanco {
 
         BancoDeDados.execSQL(SQL);
 
-        //Tabela de Informações do Filme
-        SQL = " CREATE TABLE IF NOT EXISTS INFO_FILMES ( _id INTEGER PRIMARY KEY,NOME_FILME TEXT ," +
-                "SITE_OFICI TEXT, POSTER TEXT); \n\n";
 
+        //Tabela de Filmes por Personagem
+        SQL = " CREATE TABLE IF NOT EXISTS PERSONA_FILMES ( _id INTEGER PRIMARY KEY,ID_PERSONAGEM INT ," +
+                "ID_FILME INT, URL TEXT); \n\n";
         BancoDeDados.execSQL(SQL);
 
 

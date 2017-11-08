@@ -79,6 +79,11 @@ public class ManipulaBanco {
         int i;
 
         try {
+            //Verifica se as informações dos filmes estão adicionadas ou não
+            if(Select_InfoFilmes(BancoDeDados).getCount() == 0) {
+                insereInfoFilmes(BancoDeDados, ar);
+            }
+
             //Pegando Informações complementares (Mundo, Naves Espaciais, Veículos e Filmes, Especie)
             //Mundo
             String jsonStr_Mundo = ar.chamadaGet(Json_Personagem.getString("homeworld").trim());
@@ -118,9 +123,15 @@ public class ManipulaBanco {
                 JSONObject jsonObj_Filmes = new JSONObject(jsonStr_Filmes);
                 String Filme = jsonObj_Filmes.getString("title").trim();
 
-                SQL = " INSERT INTO FILMES (ID_PERSONAGEM,NOME_FILME)" +
-                        "VALUES(" + Id_Personagem + ",'" + Filme + "') ;";
-                BancoDeDados.execSQL(SQL);
+                int id_filme = Select_id_Filme(BancoDeDados,Filme);
+
+                if(id_filme != 0) {
+
+                    SQL = " INSERT INTO PERSONA_FILMES (ID_PERSONAGEM,ID_FILME)" +
+                            "VALUES(" + Id_Personagem + "," + id_filme + ") ;";
+                    BancoDeDados.execSQL(SQL);
+
+                }
 
                 Log.i("Filmes",SQL);
             }
@@ -171,7 +182,7 @@ public class ManipulaBanco {
             Log.e("erro", e.toString());
         }
 
-        insereInfoFilmes(BancoDeDados, ar);
+
 
     }
 
@@ -179,7 +190,7 @@ public class ManipulaBanco {
 
         Download down = new Download();
 
-
+        //URLs de todos os filmes de StarWars da Movie DB API
         String InfoFilme1 = ar.chamadaGet("http://api.themoviedb.org/3/movie/1893?api_key=d223d6ab8902080ffddac5a06e71dba4");
         String InfoFilme2 = ar.chamadaGet("http://api.themoviedb.org/3/movie/1894?api_key=d223d6ab8902080ffddac5a06e71dba4");
         String InfoFilme3 = ar.chamadaGet("http://api.themoviedb.org/3/movie/1895?api_key=d223d6ab8902080ffddac5a06e71dba4");
@@ -190,6 +201,7 @@ public class ManipulaBanco {
         String InfoFilme8 = ar.chamadaGet("http://api.themoviedb.org/3/movie/181808?api_key=d223d6ab8902080ffddac5a06e71dba4");
 
         try {
+            //formando arquivo JSon com as informações dos filmes
             JSONObject jsonObj_Fil1 = new JSONObject(InfoFilme1);
             JSONObject jsonObj_Fil2 = new JSONObject(InfoFilme2);
             JSONObject jsonObj_Fil3 = new JSONObject(InfoFilme3);
@@ -199,101 +211,94 @@ public class ManipulaBanco {
             JSONObject jsonObj_Fil7 = new JSONObject(InfoFilme7);
             JSONObject jsonObj_Fil8 = new JSONObject(InfoFilme8);
 
+            //Fazendo o download das imagens dos filmes
             Bitmap bPoster_Filme1 = down.getBitmapFromURL("http://image.tmdb.org/t/p/w185/" + jsonObj_Fil1.getString("poster_path").trim());
-            Log.i("url img" ,"http://image.tmdb.org/t/p/w185/" + jsonObj_Fil1.getString("poster_path").trim());
             Bitmap bPoster_Filme2 = down.getBitmapFromURL("http://image.tmdb.org/t/p/w185/" + jsonObj_Fil2.getString("poster_path").trim());
-            Log.i("url img" ,"http://image.tmdb.org/t/p/w185/" + jsonObj_Fil2.getString("poster_path").trim());
             Bitmap bPoster_Filme3 = down.getBitmapFromURL("http://image.tmdb.org/t/p/w185/" + jsonObj_Fil3.getString("poster_path").trim());
-            Log.i("url img" ,"http://image.tmdb.org/t/p/w185/" + jsonObj_Fil3.getString("poster_path").trim());
             Bitmap bPoster_Filme4 = down.getBitmapFromURL("http://image.tmdb.org/t/p/w185/" + jsonObj_Fil4.getString("poster_path").trim());
-            Log.i("url img" ,"http://image.tmdb.org/t/p/w185/" + jsonObj_Fil4.getString("poster_path").trim());
             Bitmap bPoster_Filme5 = down.getBitmapFromURL("http://image.tmdb.org/t/p/w185/" + jsonObj_Fil5.getString("poster_path").trim());
-            Log.i("url img" ,"http://image.tmdb.org/t/p/w185/" + jsonObj_Fil5.getString("poster_path").trim());
             Bitmap bPoster_Filme6 = down.getBitmapFromURL("http://image.tmdb.org/t/p/w185/" + jsonObj_Fil6.getString("poster_path").trim());
-            Log.i("url img" ,"http://image.tmdb.org/t/p/w185/" + jsonObj_Fil6.getString("poster_path").trim());
             Bitmap bPoster_Filme7 = down.getBitmapFromURL("http://image.tmdb.org/t/p/w185/" + jsonObj_Fil7.getString("poster_path").trim());
-            Log.i("url img" ,"http://image.tmdb.org/t/p/w185/" + jsonObj_Fil7.getString("poster_path").trim());
             Bitmap bPoster_Filme8 = down.getBitmapFromURL("http://image.tmdb.org/t/p/w185/" + jsonObj_Fil8.getString("poster_path").trim());
-            Log.i("url img" ,"http://image.tmdb.org/t/p/w185/" + jsonObj_Fil8.getString("poster_path").trim());
 
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bPoster_Filme1.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray1 = byteArrayOutputStream .toByteArray();
-            byteArrayOutputStream = new ByteArrayOutputStream();
-            bPoster_Filme2.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray2 = byteArrayOutputStream .toByteArray();
-            byteArrayOutputStream = new ByteArrayOutputStream();
-            bPoster_Filme3.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray3 = byteArrayOutputStream .toByteArray();
-            byteArrayOutputStream = new ByteArrayOutputStream();
-            bPoster_Filme4.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray4 = byteArrayOutputStream .toByteArray();
-            byteArrayOutputStream = new ByteArrayOutputStream();
-            bPoster_Filme5.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray5 = byteArrayOutputStream .toByteArray();
-            byteArrayOutputStream = new ByteArrayOutputStream();
-            bPoster_Filme6.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray6 = byteArrayOutputStream .toByteArray();
-            byteArrayOutputStream = new ByteArrayOutputStream();
-            bPoster_Filme7.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray7 = byteArrayOutputStream .toByteArray();
-            byteArrayOutputStream = new ByteArrayOutputStream();
-            bPoster_Filme8.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray8 = byteArrayOutputStream .toByteArray();
-            byteArrayOutputStream = null;
+            //Verificando se todas as imagens foram baixadas
+            if(bPoster_Filme1 != null && bPoster_Filme2 != null && bPoster_Filme3 != null
+                    && bPoster_Filme4 != null && bPoster_Filme5 != null && bPoster_Filme6 != null
+                    && bPoster_Filme7 != null && bPoster_Filme8 != null) {
 
-            String Poster_Filme1 = Base64.encodeToString(byteArray1, Base64.DEFAULT);
-            String Poster_Filme2 = Base64.encodeToString(byteArray2, Base64.DEFAULT);
-            String Poster_Filme3 = Base64.encodeToString(byteArray3, Base64.DEFAULT);
-            String Poster_Filme4 = Base64.encodeToString(byteArray4, Base64.DEFAULT);
-            String Poster_Filme5 = Base64.encodeToString(byteArray5, Base64.DEFAULT);
-            String Poster_Filme6 = Base64.encodeToString(byteArray6, Base64.DEFAULT);
-            String Poster_Filme7 = Base64.encodeToString(byteArray7, Base64.DEFAULT);
-            String Poster_Filme8 = Base64.encodeToString(byteArray8, Base64.DEFAULT);
+                //Transformando os BitMaps das imagens para ByteArray
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bPoster_Filme1.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray1 = byteArrayOutputStream.toByteArray();
+                byteArrayOutputStream = new ByteArrayOutputStream();
+                bPoster_Filme2.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray2 = byteArrayOutputStream.toByteArray();
+                byteArrayOutputStream = new ByteArrayOutputStream();
+                bPoster_Filme3.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray3 = byteArrayOutputStream.toByteArray();
+                byteArrayOutputStream = new ByteArrayOutputStream();
+                bPoster_Filme4.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray4 = byteArrayOutputStream.toByteArray();
+                byteArrayOutputStream = new ByteArrayOutputStream();
+                bPoster_Filme5.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray5 = byteArrayOutputStream.toByteArray();
+                byteArrayOutputStream = new ByteArrayOutputStream();
+                bPoster_Filme6.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray6 = byteArrayOutputStream.toByteArray();
+                byteArrayOutputStream = new ByteArrayOutputStream();
+                bPoster_Filme7.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray7 = byteArrayOutputStream.toByteArray();
+                byteArrayOutputStream = new ByteArrayOutputStream();
+                bPoster_Filme8.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray8 = byteArrayOutputStream.toByteArray();
+                byteArrayOutputStream = null;
 
-            String SQL = "DELETE FROM INFO_FILMES;";
-            BancoDeDados.execSQL(SQL);
+                //Convertendo em Base64 para adicionar ao banco de dados
+                String Poster_Filme1 = Base64.encodeToString(byteArray1, Base64.DEFAULT);
+                String Poster_Filme2 = Base64.encodeToString(byteArray2, Base64.DEFAULT);
+                String Poster_Filme3 = Base64.encodeToString(byteArray3, Base64.DEFAULT);
+                String Poster_Filme4 = Base64.encodeToString(byteArray4, Base64.DEFAULT);
+                String Poster_Filme5 = Base64.encodeToString(byteArray5, Base64.DEFAULT);
+                String Poster_Filme6 = Base64.encodeToString(byteArray6, Base64.DEFAULT);
+                String Poster_Filme7 = Base64.encodeToString(byteArray7, Base64.DEFAULT);
+                String Poster_Filme8 = Base64.encodeToString(byteArray8, Base64.DEFAULT);
 
-            SQL = "INSERT INTO INFO_FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
-                          " VALUES('" + jsonObj_Fil1.get("original_title") + "','" + jsonObj_Fil1.get("homepage") + "'" +
-                    ",'" + Poster_Filme1 + "');";
-            BancoDeDados.execSQL(SQL);
-            Log.i("imagens",SQL);
-            SQL = "INSERT INTO INFO_FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
-                    " VALUES('" + jsonObj_Fil2.get("original_title") + "','" + jsonObj_Fil2.get("homepage") + "'" +
-                    ",'" + Poster_Filme2 + "');";
-            BancoDeDados.execSQL(SQL);
-            Log.i("imagens",SQL);
-            SQL = "INSERT INTO INFO_FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
-                    " VALUES('" + jsonObj_Fil3.get("original_title") + "','" + jsonObj_Fil3.get("homepage") + "'" +
-                    ",'" + Poster_Filme3 + "');";
-            BancoDeDados.execSQL(SQL);
-            Log.i("imagens",SQL);
-            SQL = "INSERT INTO INFO_FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
-                    " VALUES('" + jsonObj_Fil4.get("original_title") + "','" + jsonObj_Fil4.get("homepage") + "'" +
-                    ",'" + Poster_Filme4 + "');";
-            BancoDeDados.execSQL(SQL);
-            Log.i("imagens",SQL);
-            SQL = "INSERT INTO INFO_FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
-                    " VALUES('" + jsonObj_Fil5.get("original_title") + "','" + jsonObj_Fil5.get("homepage") + "'" +
-                    ",'" + Poster_Filme5 + "');";
-            BancoDeDados.execSQL(SQL);
-            Log.i("imagens",SQL);
-            SQL = "INSERT INTO INFO_FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
-                    " VALUES('" + jsonObj_Fil6.get("original_title") + "','" + jsonObj_Fil6.get("homepage") + "'" +
-                    ",'" + Poster_Filme6 + "');";
-            BancoDeDados.execSQL(SQL);
-            Log.i("imagens",SQL);
-            SQL = "INSERT INTO INFO_FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
-                    " VALUES('" + jsonObj_Fil7.get("original_title") + "','" + jsonObj_Fil7.get("homepage") + "'" +
-                    ",'" + Poster_Filme7 + "');";
-            BancoDeDados.execSQL(SQL);
-            Log.i("imagens",SQL);
-            SQL = "INSERT INTO INFO_FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
-                    " VALUES('" + jsonObj_Fil8.get("original_title") + "','" + jsonObj_Fil8.get("homepage")  + "'" +
-                    ",'" + Poster_Filme8 + "');";
-            BancoDeDados.execSQL(SQL);
-            Log.i("imagens",SQL);
+                //Inserindo informações dos filme nas tabelas
+                SQL = "INSERT INTO FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
+                        " VALUES('" + jsonObj_Fil1.get("original_title") + "','" + jsonObj_Fil1.get("homepage") + "'" +
+                        ",'" + Poster_Filme1 + "');";
+                BancoDeDados.execSQL(SQL);
+                SQL = "INSERT INTO FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
+                        " VALUES('" + jsonObj_Fil2.get("original_title") + "','" + jsonObj_Fil2.get("homepage") + "'" +
+                        ",'" + Poster_Filme2 + "');";
+                BancoDeDados.execSQL(SQL);
+                SQL = "INSERT INTO FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
+                        " VALUES('" + jsonObj_Fil3.get("original_title") + "','" + jsonObj_Fil3.get("homepage") + "'" +
+                        ",'" + Poster_Filme3 + "');";
+                BancoDeDados.execSQL(SQL);
+
+                //O Título Original é "Star Wars" somente. Mas deve ser alterado para "Star Wars: A New Hope"
+                SQL = "INSERT INTO FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
+                        " VALUES('" + jsonObj_Fil4.get("original_title") + ": A New Hope" + "','" + jsonObj_Fil4.get("homepage") + "'" +
+                        ",'" + Poster_Filme4 + "');";
+                BancoDeDados.execSQL(SQL);
+                SQL = "INSERT INTO FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
+                        " VALUES('" + jsonObj_Fil5.get("original_title") + "','" + jsonObj_Fil5.get("homepage") + "'" +
+                        ",'" + Poster_Filme5 + "');";
+                BancoDeDados.execSQL(SQL);
+                SQL = "INSERT INTO FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
+                        " VALUES('" + jsonObj_Fil6.get("original_title") + "','" + jsonObj_Fil6.get("homepage") + "'" +
+                        ",'" + Poster_Filme6 + "');";
+                BancoDeDados.execSQL(SQL);
+                SQL = "INSERT INTO FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
+                        " VALUES('" + jsonObj_Fil7.get("original_title") + "','" + jsonObj_Fil7.get("homepage") + "'" +
+                        ",'" + Poster_Filme7 + "');";
+                BancoDeDados.execSQL(SQL);
+                SQL = "INSERT INTO FILMES(NOME_FILME,SITE_OFICI,POSTER)" +
+                        " VALUES('" + jsonObj_Fil8.get("original_title") + "','" + jsonObj_Fil8.get("homepage") + "'" +
+                        ",'" + Poster_Filme8 + "');";
+                BancoDeDados.execSQL(SQL);
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -347,21 +352,21 @@ public class ManipulaBanco {
         return cursor;
     }
 
-    public Cursor Select_Filmes(int id_personagem,SQLiteDatabase BancoDeDados){
+    public Cursor Select_Persona_Filmes(int id_personagem,SQLiteDatabase BancoDeDados){
 
         Cursor cursor;
 
         cursor = BancoDeDados.rawQuery("SELECT " +
                 "                            A._id," +
-                "                            A.ID_PERSONAGEM," +
-                "                            NOME_FILME," +
-                "                            URL " +
+                "                            B.NOME_FILME," +
+                "                            B.SITE_OFICI," +
+                "                            B.POSTER " +
                 "                        FROM " +
-                "                           FILMES A" +
+                "                           PERSONA_FILMES A INNER JOIN FILMES B ON B._id = A.ID_FILME" +
                 "                        WHERE " +
                 "                             A.ID_PERSONAGEM = " + id_personagem +
                 "                        ORDER " +
-                "                            BY A.NOME_FILME", null);
+                "                            BY B._id", null);
 
         return cursor;
     }
@@ -430,11 +435,33 @@ public class ManipulaBanco {
                 "                            SITE_OFICI," +
                 "                            POSTER " +
                 "                        FROM " +
-                "                           INFO_FILMES A" +
+                "                           FILMES A" +
                 "                        ORDER " +
                 "                            BY A.NOME_FILME", null);
 
         return cursor;
+    }
+
+    private int Select_id_Filme(SQLiteDatabase BancoDeDados, String Nome_Filme){
+
+        Cursor cursor;
+        int id = 0;
+
+        cursor = BancoDeDados.rawQuery("SELECT " +
+                "                            A._id" +
+                "                        FROM " +
+                "                           FILMES A" +
+                "                        WHERE " +
+                "                            NOME_FILME LIKE '%" + Nome_Filme + "%'", null);
+
+        if(cursor.getCount() > 0){
+
+            cursor.moveToFirst();
+            id = cursor.getInt(0);
+
+        }
+
+        return id;
     }
 
     public void atualizaLista(ListView listaPersonagem, SQLiteDatabase BancoDeDados
@@ -471,6 +498,74 @@ public class ManipulaBanco {
                     }
 
             );
+
+        }
+
+    }
+
+    public int Adc_Us(SQLiteDatabase BancoDeDados,String Nome_us){
+
+        int idUs;
+
+        Cursor Busca_Us = BancoDeDados.rawQuery("SELECT " +
+                "         A._id,A.NOME_USUARIO" +
+                "    FROM" +
+                "       USUARIO A " +
+                "    WHERE" +
+                "        NOME_USUARIO = '" + Nome_us + "'",null);
+
+        if(Busca_Us.getCount() == 0){
+
+            SQL = "UPDATE USUARIO SET ULTIMO_US = null";
+            BancoDeDados.execSQL(SQL);
+
+            SQL = "INSERT INTO USUARIO(NOME_USUARIO,ULTIMO_US)" +
+                    "VALUES('" + Nome_us + "','S');";
+            BancoDeDados.execSQL(SQL);
+            Log.i("inserindo",SQL);
+
+            Busca_Us = BancoDeDados.rawQuery("SELECT " +
+                    "         A._id,A.NOME_USUARIO" +
+                    "    FROM" +
+                    "       USUARIO A " +
+                    "    WHERE" +
+                    "        NOME_USUARIO = '" + Nome_us + "'",null);
+
+            Busca_Us.moveToFirst();
+            idUs= Busca_Us.getInt(0);
+            Log.i("id","" + idUs);
+
+        }else{
+            Busca_Us.moveToFirst();
+            idUs = Busca_Us.getInt(0);
+            Log.i("id","" + idUs);
+
+        }
+
+        return idUs;
+
+    }
+
+    public String Verifica_Us(SQLiteDatabase BancoDeDados,String us){
+
+        Log.i("nome",us);
+
+        Cursor Busca_Us = BancoDeDados.rawQuery("SELECT " +
+                "         A._id,A.NOME_USUARIO" +
+                "    FROM" +
+                "       USUARIO A " +
+                "    WHERE" +
+                "        ULTIMO_US = 'S'",null);
+
+
+
+        if(Busca_Us.getCount() > 0){
+
+            Busca_Us.moveToFirst();
+            return Busca_Us.getString(1);
+        }else{
+
+            return "SemUs";
 
         }
 
