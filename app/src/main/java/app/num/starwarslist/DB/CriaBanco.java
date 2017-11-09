@@ -1,4 +1,4 @@
-package app.num.barcodescannerproject.DB;
+package app.num.starwarslist.DB;
 
 import android.database.sqlite.SQLiteDatabase;
 

@@ -4,8 +4,8 @@
     android:orientation="horizontal" >
     <ImageView
         android:id="@+id/imagem_filme"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:contentDescription="Imagem dos filmes Star Wars"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"

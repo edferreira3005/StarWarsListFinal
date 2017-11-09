@@ -1,4 +1,4 @@
-package app.num.barcodescannerproject.Customizacao;
+package app.num.starwarslist.Customizacao;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -59,11 +59,11 @@ public class CustomCursorAdapter extends CursorAdapter {
 
             // Populate fields with extracted properties
             if(myBitmap != null) {
-                image.setImageBitmap(Bitmap.createScaledBitmap(myBitmap, 500, 700, true));
+                image.setImageBitmap(Bitmap.createScaledBitmap(myBitmap, 800, 1200, true));
                 descricao.setText(cursor.getString(1));
 
             }else{
-                image.setImageDrawable(view.getResources().getDrawable(R.drawable.common_ic_googleplayservices));
+                image.setImageDrawable(view.getResources().getDrawable(R.mipmap.logo_star_wars_app));
                 descricao.setText(cursor.getString(1));
 
             }

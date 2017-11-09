@@ -1,10 +1,12 @@
-package app.num.barcodescannerproject.DB;
+package app.num.starwarslist.DB;
 
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -17,12 +19,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
-import app.num.barcodescannerproject.Internet.ConexaoUrls;
-import app.num.barcodescannerproject.Internet.Download;
 import app.num.barcodescannerproject.R;
-import app.num.barcodescannerproject.Telas.InfoActivity;
-import app.num.barcodescannerproject.Telas.MainActivity;
+import app.num.starwarslist.Internet.ConexaoUrls;
+import app.num.starwarslist.Internet.Download;
+import app.num.starwarslist.Telas.InfoActivity;
+import app.num.starwarslist.Telas.MainActivity;
 
 /**
  * Created by edson.ferreira on 06/11/2017.
@@ -32,43 +40,72 @@ public class ManipulaBanco {
 
     String SQL;
 
-    public boolean InserePersonagem(SQLiteDatabase BancoDeDados, String URL){
+    public boolean InserePersonagem(SQLiteDatabase BancoDeDados, String URL, int idUs,
+                                    double Latitude, double Longitude, Context context){
         try {
+
+            //Buscando Informações de Localização
 
             //Buscando dados para adicionar
             final ConexaoUrls ar = new ConexaoUrls();
             String jsonStr = ar.chamadaGet(URL);
             JSONObject jsonObj = new JSONObject(jsonStr);
 
+            String Endereco;
 
-            //Verificando se o personagem já foi adicionado
-            Cursor VerificaRegistro = BancoDeDados.rawQuery("SELECT A._id , A.NOME_PERSONA FROM PERSONAGEM A " +
-                    " WHERE NOME_PERSONA = '" + jsonObj.getString("name").trim() + "'", null);
+            Date Data = Calendar.getInstance().getTime();
 
-            if(VerificaRegistro.getCount() == 0) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd - HH:mm:ss");
+            String Data_Formatada= dateFormat.format(Data);
 
-                //Adicionando Personagem
-                SQL = " INSERT INTO PERSONAGEM (NOME_PERSONA, URL) " +
-                        " VALUES('" + jsonObj.getString("name").trim() + "', '" + URL + "') ;";
-                BancoDeDados.execSQL(SQL);
 
-                Log.i("Personagem",SQL);
+            Geocoder geocoder = new Geocoder(context,
+                    Locale.getDefault());
 
-                Cursor PegarIdPersonagem = BancoDeDados.rawQuery("SELECT A._id  FROM PERSONAGEM A " +
-                        " WHERE NOME_PERSONA = '" + jsonObj.getString("name").trim() + "'", null);
+            if(Latitude == 0 && Longitude == 0){
 
-                if(PegarIdPersonagem.getCount() > 0){
-                    PegarIdPersonagem.moveToFirst();
+                Endereco = "Sem Endereço";
 
-                    //Inserindo nas Outras tabelas de dados
-                    InsereInfoPersonagem(PegarIdPersonagem.getInt(0),BancoDeDados, jsonObj,ar);
-                }
+            }else{
+            List<Address> addresses = geocoder.getFromLocation(Latitude,
+                    Longitude, 1);
+                Endereco = addresses.get(0).getAddressLine(0);
 
             }
 
-            return true;
+
+                //Verificando se o personagem já foi adicionado
+                Cursor VerificaRegistro = BancoDeDados.rawQuery("SELECT A._id , A.NOME_PERSONA FROM PERSONAGEM A " +
+                        " WHERE NOME_PERSONA = '" + jsonObj.getString("name").trim() + "' AND A.ID_USUARIO = " + idUs, null);
+
+                if (VerificaRegistro.getCount() == 0) {
+
+                    //Adicionando Personagem
+                    SQL = " INSERT INTO PERSONAGEM (NOME_PERSONA, URL,ID_USUARIO,GEOLOCALIZACAO,DATA_CAPTURA) " +
+                            " VALUES('" + jsonObj.getString("name").trim() + "', '" + URL + "','" + idUs +
+                            "','" + Endereco + "','" + Data_Formatada + "') ;";
+                    BancoDeDados.execSQL(SQL);
+
+                    Log.i("Personagem", SQL);
+
+                    Cursor PegarIdPersonagem = BancoDeDados.rawQuery("SELECT A._id  FROM PERSONAGEM A " +
+                            " WHERE NOME_PERSONA = '" + jsonObj.getString("name").trim() + "' AND A.ID_USUARIO = " + idUs, null);
+
+                    if (PegarIdPersonagem.getCount() > 0) {
+                        PegarIdPersonagem.moveToFirst();
+
+                        //Inserindo nas Outras tabelas de dados
+                        InsereInfoPersonagem(PegarIdPersonagem.getInt(0), BancoDeDados, jsonObj, ar);
+                    }
+
+                }
+
+                return true;
+
 
         } catch (JSONException e) {
+            return false;
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
@@ -107,8 +144,8 @@ public class ManipulaBanco {
             SQL = " INSERT INTO INFO_BASICA (ID_PERSONAGEM  ,ALTURA, PESO, " +
                     "COR_CABELO, COR_PELE, COR_OLHO,ANO_NASCIMENTO," +
                     "GENERO, MUNDO_NATAL, ANO_CRIACAO, ANO_EDIT) " +
-                    " VALUES(" + Id_Personagem + "," + Json_Personagem.getString("height").trim() +
-                    "," + Json_Personagem.getString("mass").trim() + ",'" + Json_Personagem.getString("hair_color").trim() + "'" +
+                    " VALUES(" + Id_Personagem + ",'" + Json_Personagem.getString("height").trim() +
+                    "','" + Json_Personagem.getString("mass").trim() + "','" + Json_Personagem.getString("hair_color").trim() + "'" +
                     ",'" + Json_Personagem.getString("skin_color").trim() + "','" + Json_Personagem.getString("eye_color").trim() + "'" +
                     ",'" + Json_Personagem.getString("birth_year").trim() + "','" + Json_Personagem.getString("gender").trim() + "'" +
                     ",'" + Mundo + "','" + Json_Personagem.getString("created").trim() + "'" +
@@ -178,10 +215,9 @@ public class ManipulaBanco {
                 Log.i("Nave Espacial",SQL);
             }
 
-        }catch (Exception e){
-            Log.e("erro", e.toString());
+        }catch (JSONException e) {
+            e.printStackTrace();
         }
-
 
 
     }
@@ -467,18 +503,23 @@ public class ManipulaBanco {
     public void atualizaLista(ListView listaPersonagem, SQLiteDatabase BancoDeDados
                                , final Context context){
 
-        final Cursor personagens = BancoDeDados.rawQuery("SELECT A._id, A.NOME_PERSONA FROM PERSONAGEM A" +
-                " ORDER BY A.NOME_PERSONA", null);
+        final Cursor personagens = BancoDeDados.rawQuery("SELECT " +
+                "                                             A._id, " +
+                "                                             A.NOME_PERSONA," +
+                "                                             'Usuário: ' || B.NOME_USUARIO || ' / URL Capturada: ' || A.URL AS NOME_USUARIO" +
+                "                                         FROM " +
+                "                                            PERSONAGEM A INNER JOIN USUARIO B ON B._id = A.ID_USUARIO" +
+                " ORDER BY A._id DESC", null);
 
-        final String[] coluna = new String[]{"NOME_PERSONA"};
+        final String[] coluna = new String[]{"NOME_PERSONA","NOME_USUARIO"};
         SimpleCursorAdapter AdapterLista;
 
         if (personagens.getCount() > 0) {
 
             personagens.moveToFirst();
 
-            AdapterLista = new SimpleCursorAdapter(context, R.layout.mostra_banco, personagens,
-                    coluna, new int[]{R.id.tvCarregaDado});
+            AdapterLista = new SimpleCursorAdapter(context, R.layout.lista, personagens,
+                    coluna, new int[]{R.id.tvCarregaDado,R.id.tvCarregaDado2});
 
             listaPersonagem.setAdapter(AdapterLista);
 

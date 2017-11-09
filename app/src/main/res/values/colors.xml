@@ -4,5 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="actionbar_opacity">#33000000</color>
-    <color name="listview_color">#4169E1</color>
+    <color name="colorBackgroud">#E0E0E0</color>
+    <color name="colorText">#5D4037</color>
+    <color name="colorLista">#BDBDBD</color>
+    <color name="colorInfoLocal">#FF6F00</color>
 </resources>

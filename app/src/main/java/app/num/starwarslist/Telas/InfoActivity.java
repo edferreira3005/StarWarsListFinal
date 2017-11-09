@@ -1,12 +1,12 @@
-package app.num.barcodescannerproject.Telas;
+package app.num.starwarslist.Telas;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MergeCursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -14,11 +14,11 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import app.num.barcodescannerproject.Customizacao.CustomCursorAdapter;
-import app.num.barcodescannerproject.DB.ManipulaBanco;
 import app.num.barcodescannerproject.R;
+import app.num.starwarslist.Customizacao.CustomCursorAdapter;
+import app.num.starwarslist.DB.ManipulaBanco;
 
-public class InfoActivity extends Activity{
+public class InfoActivity extends AppCompatActivity {
 
     SimpleCursorAdapter AdapterLista;
     public static CustomCursorAdapter adapter;
@@ -45,6 +45,8 @@ public class InfoActivity extends Activity{
         TextView tvDtEdita = (TextView) findViewById(R.id.tvDtEdita);
         TextView tvVeiculos = (TextView) findViewById(R.id.tvVeiculos);
         TextView tvEspecie = (TextView) findViewById(R.id.tvEspecie);
+        TextView tvGeoLocal = (TextView) findViewById(R.id.tvGeoLocal);
+        TextView tvDataCap = (TextView) findViewById(R.id.tvDataCap);
 
         //Pegando Listas para preenchimento das Informações
         ListView lvFilmes = (ListView) findViewById(R.id.lvFilmes);
@@ -66,6 +68,9 @@ public class InfoActivity extends Activity{
 
             Personagem.moveToFirst();
             tvNomePersona.setText(Personagem.getString(1));
+            tvGeoLocal.setText(tvGeoLocal.getText() + " " + Personagem.getString(3).trim());
+            tvDataCap.setText(tvDataCap.getText() + " " + Personagem.getString(4).trim());
+
 
         }
 
@@ -121,28 +126,56 @@ public class InfoActivity extends Activity{
 
         if(TodosVeículos.getCount() > 0){
 
-            TodosVeículos.moveToFirst();
+            try {
 
-            final String[] coluna = new String[]{"NOME_NAVE"};
+                TodosVeículos.moveToFirst();
 
-            AdapterLista = new SimpleCursorAdapter(this, R.layout.mostra_banco, TodosVeículos,
-                    coluna, new int[]{R.id.tvCarregaDado});
+                final String[] coluna = new String[]{"NOME_NAVE"};
 
-            lvVeicNave.setAdapter(AdapterLista);
+                AdapterLista = new SimpleCursorAdapter(this, R.layout.lista, TodosVeículos,
+                        coluna, new int[]{R.id.tvCarregaDado});
 
-            lvVeicNave.setOnItemClickListener(
-                    new AdapterView.OnItemClickListener() {
+                lvVeicNave.setAdapter(AdapterLista);
 
-
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                lvVeicNave.setOnItemClickListener(
+                        new AdapterView.OnItemClickListener() {
 
 
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+
+                            }
                         }
-                    }
 
-            );
+                );
+            }catch (Exception e){
+
+                TodosVeículos.moveToFirst();
+
+                final String[] coluna = new String[]{"NOME_VEICULO"};
+
+                AdapterLista = new SimpleCursorAdapter(this, R.layout.lista, TodosVeículos,
+                        coluna, new int[]{R.id.tvCarregaDado});
+
+                lvVeicNave.setAdapter(AdapterLista);
+
+                lvVeicNave.setOnItemClickListener(
+                        new AdapterView.OnItemClickListener() {
+
+
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                            }
+                        }
+
+                );
+
+
+
+            }
 
         }else{
             tvVeiculos.setVisibility(View.INVISIBLE);

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/colorBackgroud"
     android:layout_height="match_parent">
 
     <TextView
@@ -20,6 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
+        android:background="@drawable/custom_edittext"
         android:ems="10"
         android:id="@+id/etNomeUs"
         android:layout_marginLeft="7dp"
@@ -32,19 +34,21 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:srcCompat="@drawable/logo_star_wars_app"
+        app:srcCompat="@mipmap/logo_star_wars_app"
         android:id="@+id/logoLogin"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <ImageButton
+    <Button android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/ic_media_play"
-        android:layout_marginTop="42dp"
+        android:text="Entrar"
+        android:background="@drawable/background_button"
+        android:textColor="#FFFFFF"
         android:id="@+id/btnLogin"
+        android:textStyle="normal|bold"
         android:layout_below="@+id/etNomeUs"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp" />
 
 </RelativeLayout>

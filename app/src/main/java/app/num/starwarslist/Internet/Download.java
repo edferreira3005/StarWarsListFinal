@@ -1,4 +1,4 @@
-package app.num.barcodescannerproject.Internet;
+package app.num.starwarslist.Internet;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

@@ -1,4 +1,4 @@
-package app.num.barcodescannerproject;
+package app.num.starwatslist;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
