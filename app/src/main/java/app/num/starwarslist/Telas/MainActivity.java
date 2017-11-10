@@ -176,6 +176,8 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             }
 
         }
+
+        mScannerView.stopCamera();
     }
 
 
@@ -185,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             super.onBackPressed();
             return;
         }else{
+            mScannerView.stopCamera();
             setContentView(R.layout.activity_main);
             //Atualizando Lista
             lvPersonagens = (ListView) findViewById(R.id.lvPersonagens);

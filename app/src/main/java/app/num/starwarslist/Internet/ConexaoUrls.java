@@ -1,19 +1,20 @@
 package app.num.starwarslist.Internet;
 
-import android.os.StrictMode;
+import android.os.Build;
+import android.util.Log;
 
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.params.ConnManagerParams;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 /**
@@ -34,48 +35,58 @@ public class ConexaoUrls {
         HttpConnectionParams.setConnectionTimeout(httpParameters, CONN_TIMEOUT);
         HttpConnectionParams.setSoTimeout(httpParameters, SO_TIMEOUT);
 
-
-        HttpClient httpclient = new DefaultHttpClient(httpParameters);
-
-        HttpGet chamadaget = new HttpGet(url);
-
+        HttpURLConnection connection;
         String retorno = "";
 
         try {
+            URL url2 = new URL(url);
+            connection = (HttpURLConnection) url2.openConnection();
+            connection.setRequestProperty("User-Agent", "swapi-android-" + Build.VERSION.RELEASE);
+
+            int responseCode = connection.getResponseCode();
+
+            if(responseCode == HttpURLConnection.HTTP_OK){
+                retorno = readStream(connection.getInputStream());
+                Log.v("CatalogClient", retorno);
 
 
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-            StrictMode.setThreadPolicy(policy);
-
-
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            String responseBody = httpclient.execute(chamadaget,
-                    responseHandler);
-
-
-
-            retorno = responseBody;
-
+            }
             return retorno;
 
-
-        } catch (ClientProtocolException e) {
-            // TODO Auto-generated catch block
+        } catch (MalformedURLException e) {
             e.printStackTrace();
-            retorno = "";
             return retorno;
-
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
-            retorno = "";
             return retorno;
-        } catch (Throwable t) {
-            retorno = "";
+        }catch (Exception e){
+            e.printStackTrace();
             return retorno;
         }
 
 
+    }
+
+    private String readStream(InputStream in) {
+        BufferedReader reader = null;
+        StringBuffer response = new StringBuffer();
+        try {
+            reader = new BufferedReader(new InputStreamReader(in));
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return response.toString();
     }
 }
