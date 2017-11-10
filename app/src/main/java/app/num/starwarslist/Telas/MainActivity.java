@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     private ZXingScannerView mScannerView;
     CriaBanco cria = new CriaBanco();
     ListView lvPersonagens;
-    public static int id_personagem;
+    public int id_personagem;
 
     boolean doubleBackToExitPressedOnce = false;
     ManipulaBanco inser = new ManipulaBanco();

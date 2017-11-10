@@ -21,7 +21,7 @@ import app.num.starwarslist.DB.ManipulaBanco;
 public class InfoActivity extends AppCompatActivity {
 
     SimpleCursorAdapter AdapterLista;
-    public static CustomCursorAdapter adapter;
+    public  CustomCursorAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

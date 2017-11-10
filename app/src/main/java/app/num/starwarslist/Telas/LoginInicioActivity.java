@@ -16,15 +16,12 @@ import app.num.starwarslist.DB.CriaBanco;
 import app.num.starwarslist.DB.ManipulaBanco;
 import app.num.barcodescannerproject.R;
 
-/**
- * Created by edson.ferreira on 08/11/2017.
- */
 
 public class LoginInicioActivity extends ActionBarActivity {
 
-    public static SQLiteDatabase BancoDeDados = null;
+    public SQLiteDatabase BancoDeDados = null;
     static String NomeBanco = "StarWarsList";
-    public static int idUs;
+    public int idUs;
 
 
 
