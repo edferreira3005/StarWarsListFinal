@@ -5,14 +5,12 @@
     android:background="@color/colorBackgroud"
     android:layout_height="match_parent">
 
-    <TextView
-        android:text="@string/login_usuario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="64dp"
-        android:id="@+id/tvUs"
-        android:layout_below="@+id/logoLogin"
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:srcCompat="@mipmap/logo_star_wars_app"
+        android:id="@+id/logoLogin"
+        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
     <EditText
@@ -22,18 +20,9 @@
         android:background="@drawable/custom_edittext"
         android:ems="10"
         android:id="@+id/etNomeUs"
-        android:layout_marginStart="7dp"
         android:layout_alignBaseline="@+id/tvUs"
         android:layout_alignBottom="@+id/tvUs"
-        android:layout_toEndOf="@+id/tvUs" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:srcCompat="@mipmap/logo_star_wars_app"
-        android:id="@+id/logoLogin"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true" />
 
     <Button android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -42,8 +31,18 @@
         android:textColor="#FFFFFF"
         android:id="@+id/btnLogin"
         android:textStyle="normal|bold"
+        android:layout_marginTop="53dp"
         android:layout_below="@+id/etNomeUs"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp" />
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="@string/login_usuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:id="@+id/tvUs"
+        android:layout_below="@+id/logoLogin"
+        android:layout_toStartOf="@+id/etNomeUs"
+        android:layout_marginEnd="25dp" />
 
 </RelativeLayout>

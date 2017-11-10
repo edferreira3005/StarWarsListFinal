@@ -180,7 +180,11 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         }
 
-        QRCodeScanner.stopCamera();
+        if(QRCodeScanner != null) {
+
+            QRCodeScanner.stopCamera();
+
+        }
     }
 
 
@@ -192,7 +196,13 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         }else{
 
             //Voltando para tela principal quando apertar o botão "voltar" do aparelho
-            QRCodeScanner.stopCamera();
+
+            if(QRCodeScanner != null) {
+
+                QRCodeScanner.stopCamera();
+
+            }
+
             setContentView(R.layout.activity_main);
 
             //Atualizando Lista

@@ -505,7 +505,7 @@ public class ManipulaBanco {
         final Cursor personagens = BancoDeDados.rawQuery("SELECT " +
                 "                                             A._id, " +
                 "                                             A.NOME_PERSONA," +
-                "                                             'Usuário: ' || B.NOME_USUARIO || ' / URL Capturada: ' || A.URL AS NOME_USUARIO" +
+                "                                             'User: ' || B.NOME_USUARIO || ' / Catch URL: ' || A.URL AS NOME_USUARIO" +
                 "                                         FROM " +
                 "                                            PERSONAGEM A INNER JOIN USUARIO B ON B._id = A.ID_USUARIO" +
                 " ORDER BY A._id DESC", null);

@@ -12,7 +12,7 @@
 
     <Button android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:text="Iniciar Leitura do QR Code"
+        android:text="@string/main_btn_qrcode"
         android:background="@drawable/background_button"
         android:textColor="#FFFFFF"
         android:onClick="QrScanner"
@@ -28,7 +28,7 @@
         style="@style/Widget.AppCompat.ListView" />
 
     <TextView
-        android:text="Personagens já Adicionados"
+        android:text="@string/main_titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="13dp"
