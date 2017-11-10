@@ -19,9 +19,9 @@ import app.num.barcodescannerproject.R;
 
 public class LoginInicioActivity extends ActionBarActivity {
 
-    public SQLiteDatabase BancoDeDados = null;
+    public static SQLiteDatabase BancoDeDados = null;
     static String NomeBanco = "StarWarsList";
-    public int idUs;
+    public static int idUs;
 
 
 
@@ -29,13 +29,16 @@ public class LoginInicioActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_usuario);
+
         final AlertDialog.Builder Erro = new AlertDialog.Builder(LoginInicioActivity.this);
-        BancoDeDados = openOrCreateDatabase(NomeBanco, Context.MODE_PRIVATE, null);
         final ManipulaBanco inser = new ManipulaBanco();
+        final EditText Nome_Us = (EditText) findViewById(R.id.etNomeUs);
+
+        BancoDeDados = openOrCreateDatabase(NomeBanco, Context.MODE_PRIVATE, null);
+
         CriaBanco cria = new CriaBanco();
 
         Button btnLogin = (Button) findViewById(R.id.btnLogin);
-        final EditText Nome_Us = (EditText) findViewById(R.id.etNomeUs);
 
         if(cria.criaBanco(BancoDeDados)) {
 
@@ -49,6 +52,7 @@ public class LoginInicioActivity extends ActionBarActivity {
 
             }
 
+            //Validando acesso ao usuário
             btnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -70,7 +74,7 @@ public class LoginInicioActivity extends ActionBarActivity {
                     }else if(Nome_Us.getText().toString().contains(" ")){
 
                         Erro.setTitle("Atenção!");
-                        Erro.setMessage("Não é permisido colocar espaços no nome de Usuário.");
+                        Erro.setMessage("Não é permitido colocar espaços no nome de Usuário.");
                         Erro.setNeutralButton("OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {

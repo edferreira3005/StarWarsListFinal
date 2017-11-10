@@ -1,4 +1,4 @@
-package app.num.barcodescannerproject;
+package app.num.starwarslist;
 
 import org.junit.Test;
 

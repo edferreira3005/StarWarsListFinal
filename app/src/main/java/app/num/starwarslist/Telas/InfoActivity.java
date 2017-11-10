@@ -15,13 +15,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import app.num.barcodescannerproject.R;
-import app.num.starwarslist.Customizacao.CustomCursorAdapter;
+import app.num.starwarslist.Customizacao.CursorImagemAdapter;
 import app.num.starwarslist.DB.ManipulaBanco;
 
 public class InfoActivity extends AppCompatActivity {
 
     SimpleCursorAdapter AdapterLista;
-    public  CustomCursorAdapter adapter;
+    public CursorImagemAdapter AdapterImagem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,7 @@ public class InfoActivity extends AppCompatActivity {
         Cursor Naves_Espaciais = select.Select_Nave_Espacial(main.id_personagem,login.BancoDeDados);
         Cursor Personagem = select.Select_Personagem(main.id_personagem,login.BancoDeDados);
 
+        //Colocando Informações de Localização
         if(Personagem.getCount() > 0){
 
             Personagem.moveToFirst();
@@ -74,6 +75,7 @@ public class InfoActivity extends AppCompatActivity {
 
         }
 
+        //Colocando outras informações básicas
         if(InfoBasic.getCount() > 0){
 
             InfoBasic.moveToFirst();
@@ -91,13 +93,13 @@ public class InfoActivity extends AppCompatActivity {
 
         }
 
-        //Filmes
-
+        //Adicionando Filmes na lista customizada
         if (Filmes.getCount() > 0) {
 
-            adapter = new CustomCursorAdapter(getBaseContext(), Filmes);
-            lvFilmes.setAdapter(adapter);
+            AdapterImagem = new CursorImagemAdapter(getBaseContext(), Filmes);
+            lvFilmes.setAdapter(AdapterImagem);
 
+            //Ao clicar no item, abrir o site oficial do filme selecionado
             lvFilmes.setOnItemClickListener(
                     new AdapterView.OnItemClickListener() {
 

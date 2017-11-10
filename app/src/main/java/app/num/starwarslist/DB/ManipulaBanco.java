@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -76,20 +75,22 @@ public class ManipulaBanco {
 
                 //Verificando se o personagem já foi adicionado
                 Cursor VerificaRegistro = BancoDeDados.rawQuery("SELECT A._id , A.NOME_PERSONA FROM PERSONAGEM A " +
-                        " WHERE NOME_PERSONA = '" + jsonObj.getString("name").trim() + "' AND A.ID_USUARIO = " + idUs, null);
+                        " WHERE NOME_PERSONA = '" + jsonObj.getString("name").trim().replace("'","") +
+                        "' AND A.ID_USUARIO = " + idUs, null);
 
                 if (VerificaRegistro.getCount() == 0) {
 
                     //Adicionando Personagem
                     SQL = " INSERT INTO PERSONAGEM (NOME_PERSONA, URL,ID_USUARIO,GEOLOCALIZACAO,DATA_CAPTURA) " +
-                            " VALUES('" + jsonObj.getString("name").trim() + "', '" + URL + "','" + idUs +
+                            " VALUES('" + jsonObj.getString("name").trim().replace("'","") +
+                            "', '" + URL + "','" + idUs +
                             "','" + Endereco + "','" + Data_Formatada + "') ;";
                     BancoDeDados.execSQL(SQL);
 
-                    Log.i("Personagem", SQL);
 
                     Cursor PegarIdPersonagem = BancoDeDados.rawQuery("SELECT A._id  FROM PERSONAGEM A " +
-                            " WHERE NOME_PERSONA = '" + jsonObj.getString("name").trim() + "' AND A.ID_USUARIO = " + idUs, null);
+                            " WHERE NOME_PERSONA = '" + jsonObj.getString("name").trim().replace("'","") +
+                            "' AND A.ID_USUARIO = " + idUs, null);
 
                     if (PegarIdPersonagem.getCount() > 0) {
                         PegarIdPersonagem.moveToFirst();
@@ -144,14 +145,16 @@ public class ManipulaBanco {
             SQL = " INSERT INTO INFO_BASICA (ID_PERSONAGEM  ,ALTURA, PESO, " +
                     "COR_CABELO, COR_PELE, COR_OLHO,ANO_NASCIMENTO," +
                     "GENERO, MUNDO_NATAL, ANO_CRIACAO, ANO_EDIT) " +
-                    " VALUES(" + Id_Personagem + ",'" + Json_Personagem.getString("height").trim() +
-                    "','" + Json_Personagem.getString("mass").trim() + "','" + Json_Personagem.getString("hair_color").trim() + "'" +
-                    ",'" + Json_Personagem.getString("skin_color").trim() + "','" + Json_Personagem.getString("eye_color").trim() + "'" +
-                    ",'" + Json_Personagem.getString("birth_year").trim() + "','" + Json_Personagem.getString("gender").trim() + "'" +
-                    ",'" + Mundo + "','" + Json_Personagem.getString("created").trim() + "'" +
-                    ",'" + Json_Personagem.getString("edited").trim() + "') ;";
+                    " VALUES(" + Id_Personagem + ",'" + Json_Personagem.getString("height").trim().replace("'","") +
+                    "','" + Json_Personagem.getString("mass").trim().replace("'","") + "'" +
+                    ",'" + Json_Personagem.getString("hair_color").trim().replace("'","") + "'" +
+                    ",'" + Json_Personagem.getString("skin_color").trim().replace("'","") + "'" +
+                    ",'" + Json_Personagem.getString("eye_color").trim().replace("'","") + "'" +
+                    ",'" + Json_Personagem.getString("birth_year").trim().replace("'","") + "'" +
+                    ",'" + Json_Personagem.getString("gender").trim().replace("'","") + "'" +
+                    ",'" + Mundo + "','" + Json_Personagem.getString("created").trim().replace("'","") + "'" +
+                    ",'" + Json_Personagem.getString("edited").trim().replace("'","") + "') ;";
             BancoDeDados.execSQL(SQL);
-            Log.i("Informações Básicas",SQL);
 
             //Adicionando Filmes
             for (i = 0; i < array_Filmes.length(); i++) {
@@ -170,7 +173,6 @@ public class ManipulaBanco {
 
                 }
 
-                Log.i("Filmes",SQL);
             }
 
             //Adicionando Especie
@@ -178,13 +180,12 @@ public class ManipulaBanco {
 
                 String jsonStr_Especie = ar.chamadaGet(array_Especie.getString(i).trim());
                 JSONObject jsonObj_Especie = new JSONObject(jsonStr_Especie);
-                String Especie = jsonObj_Especie.getString("name").trim();
+                String Especie = jsonObj_Especie.getString("name").trim().replace("'","");
 
                 SQL = " INSERT INTO ESPECIE (ID_PERSONAGEM,ESPECIE)" +
                         "VALUES(" + Id_Personagem + ",'" + Especie + "') ;";
                 BancoDeDados.execSQL(SQL);
 
-                Log.i("Especie",SQL);
             }
 
             //Adicionando Veículos
@@ -192,13 +193,12 @@ public class ManipulaBanco {
 
                 String jsonStr_Veiculos = ar.chamadaGet(array_Veiculos.getString(i).trim());
                 JSONObject jsonObj_Veiculos = new JSONObject(jsonStr_Veiculos);
-                String Veiculo = jsonObj_Veiculos.getString("name").trim();
+                String Veiculo = jsonObj_Veiculos.getString("name").trim().replace("'","");
 
                 SQL = " INSERT INTO VEICULOS (ID_PERSONAGEM,NOME_VEICULO)" +
                         "VALUES(" + Id_Personagem + ",'" + Veiculo + "') ;";
                 BancoDeDados.execSQL(SQL);
 
-                Log.i("Veículo",SQL);
             }
 
             //Adicionando Naves Espaciais
@@ -206,13 +206,12 @@ public class ManipulaBanco {
 
                 String jsonStr_Nv_Espaci = ar.chamadaGet(array_Nv_Espaci.getString(i).trim());
                 JSONObject jsonObj_Nv_Espaci = new JSONObject(jsonStr_Nv_Espaci);
-                String Nave_Espacial = jsonObj_Nv_Espaci.getString("name").trim();
+                String Nave_Espacial = jsonObj_Nv_Espaci.getString("name").trim().replace("'","");
 
                 SQL = " INSERT INTO NAVES_ESPACIAIS (ID_PERSONAGEM,NOME_NAVE)" +
                         "VALUES(" + Id_Personagem + ",'" + Nave_Espacial + "') ;";
                 BancoDeDados.execSQL(SQL);
 
-                Log.i("Nave Espacial",SQL);
             }
 
         }catch (JSONException e) {
@@ -563,7 +562,7 @@ public class ManipulaBanco {
             SQL = "INSERT INTO USUARIO(NOME_USUARIO,ULTIMO_US)" +
                     "VALUES('" + Nome_us + "','S');";
             BancoDeDados.execSQL(SQL);
-            Log.i("inserindo",SQL);
+
 
             Busca_Us = BancoDeDados.rawQuery("SELECT " +
                     "         A._id,A.NOME_USUARIO" +
@@ -574,12 +573,12 @@ public class ManipulaBanco {
 
             Busca_Us.moveToFirst();
             idUs= Busca_Us.getInt(0);
-            Log.i("id","" + idUs);
+
 
         }else{
+
             Busca_Us.moveToFirst();
             idUs = Busca_Us.getInt(0);
-            Log.i("id","" + idUs);
 
         }
 
@@ -589,7 +588,6 @@ public class ManipulaBanco {
 
     public String Verifica_Us(SQLiteDatabase BancoDeDados,String us){
 
-        Log.i("nome",us);
 
         Cursor Busca_Us = BancoDeDados.rawQuery("SELECT " +
                 "         A._id,A.NOME_USUARIO" +

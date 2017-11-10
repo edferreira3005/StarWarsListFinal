@@ -20,11 +20,11 @@ import app.num.barcodescannerproject.R;
  */
 
 @SuppressWarnings("deprecation")
-public class CustomCursorAdapter extends CursorAdapter {
+public class CursorImagemAdapter extends CursorAdapter {
 
     String NomeBanco = "RelatorioProducao";
     SQLiteDatabase BancoDeDados = null;
-    public CustomCursorAdapter(Context context, Cursor cursor) {
+    public CursorImagemAdapter(Context context, Cursor cursor) {
         super(context, cursor, 0);
     }
 

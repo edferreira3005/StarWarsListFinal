@@ -30,12 +30,12 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
-    private ZXingScannerView mScannerView;
+    private ZXingScannerView QRCodeScanner;
     CriaBanco cria = new CriaBanco();
     ListView lvPersonagens;
-    public int id_personagem;
+    public static int id_personagem;
 
-    boolean doubleBackToExitPressedOnce = false;
+    boolean sair = false;
     ManipulaBanco inser = new ManipulaBanco();
     LoginInicioActivity login = new LoginInicioActivity();
     AlertDialog.Builder Erro;
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         super.onCreate(savedInstanceState);
 
 
+        //Criando Banco de dados
         if (cria.criaBanco(login.BancoDeDados)) {
             setContentView(R.layout.activity_main);
             Erro = new AlertDialog.Builder(MainActivity.this);
@@ -54,29 +55,24 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             lvPersonagens = (ListView) findViewById(R.id.lvPersonagens);
             inser.atualizaLista(lvPersonagens, login.BancoDeDados, MainActivity.this);
 
-
             //Verificando permissões do aplicativo
-
-
             set.setPermitions(getBaseContext(), MainActivity.this);
-
 
         }
 
     }
 
     public void QrScanner(View view) {
+        //Verificando se tem internet antes de iniciar a leitura do QR Code
+        if (temInternet()) {
 
-        if (isOnline()) {
+            //Abrindo Leitura do QR Code através do ZXingScannerView
+            QRCodeScanner = new ZXingScannerView(this);
 
+            setContentView(QRCodeScanner);
 
-            mScannerView = new ZXingScannerView(this);
-
-            setContentView(mScannerView);
-
-
-            mScannerView.setResultHandler(this);
-            mScannerView.startCamera();
+            QRCodeScanner.setResultHandler(this);
+            QRCodeScanner.startCamera();
 
         } else {
 
@@ -103,10 +99,11 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
             final String url = rawResult.getText();
 
-            final LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            final LocationManager GerenciaLocaliz = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-            final LocationListener mlocListener = new Localizacao();
+            final LocationListener locListener = new Localizacao();
 
+            //Obrigatório verificação novamente dos acessos de localização
             if (ActivityCompat.checkSelfPermission(MainActivity.this,
                     Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(MainActivity.this,
@@ -115,11 +112,11 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                 return;
             }
 
-                mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
+            GerenciaLocaliz.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
 
 
 
-            Location Local = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Location Local = GerenciaLocaliz.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
             double Latitude = 0;
             double Longitude = 0;
@@ -130,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             final ManipulaBanco inser = new ManipulaBanco();
 
 
-            if (!mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            if (!GerenciaLocaliz.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
 
 
@@ -138,12 +135,15 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
                 Erro.setMessage("O GPS encontra-se desligado. Não será possível coletar dados de Localização.\n\n" +
                                 "Deseja continuar?");
+
                 final double finalLatitude = Latitude;
                 final double finalLongitude = Longitude;
+
                 Erro.setPositiveButton("Sim",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
+                                //Sincronizando dados do personagem
                                 new SincronizaDados(login.BancoDeDados, url, lvPersonagens, inser,
                                         MainActivity.this, login.idUs, finalLatitude, finalLongitude).execute();
 
@@ -167,50 +167,60 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             }else{
 
                 if( Local != null){
+
                     Latitude = Local.getLatitude();
                     Longitude = Local.getLongitude();
+
                 }
 
+                //Sincronizando dados do personagem
                 new SincronizaDados(login.BancoDeDados, url, lvPersonagens, inser,
                         MainActivity.this, login.idUs, Latitude, Longitude).execute();
             }
 
         }
 
-        mScannerView.stopCamera();
+        QRCodeScanner.stopCamera();
     }
 
 
     @Override
     public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
+        if (sair) {
             super.onBackPressed();
             return;
         }else{
-            mScannerView.stopCamera();
+
+            //Voltando para tela principal quando apertar o botão "voltar" do aparelho
+            QRCodeScanner.stopCamera();
             setContentView(R.layout.activity_main);
+
             //Atualizando Lista
             lvPersonagens = (ListView) findViewById(R.id.lvPersonagens);
             inser.atualizaLista(lvPersonagens, login.BancoDeDados, MainActivity.this);
+
         }
 
-        this.doubleBackToExitPressedOnce = true;
+        //Verificando se clicou 2 vezes para sair do aplicativo
+        this.sair = true;
         Toast.makeText(this, "Aperte o Botão novamente para sair do Aplicativo", Toast.LENGTH_SHORT).show();
 
         new Handler().postDelayed(new Runnable() {
 
             @Override
             public void run() {
-                doubleBackToExitPressedOnce = false;
+                sair = false;
             }
         }, 2000);
 
     }
 
-    protected boolean isOnline() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+    //Processo que verifica se o aparelho está conectado a internet
+    protected boolean temInternet() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 

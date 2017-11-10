@@ -1,7 +1,6 @@
 package app.num.starwarslist.Internet;
 
 import android.os.Build;
-import android.util.Log;
 
 import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.params.BasicHttpParams;
@@ -22,6 +21,7 @@ import java.net.URL;
  */
 @SuppressWarnings("deprecation")
 public class ConexaoUrls {
+
     private static final long CONN_MGR_TIMEOUT = 30000;
     private static final int CONN_TIMEOUT = 30000;
     private static final int SO_TIMEOUT = 30000;
@@ -29,25 +29,30 @@ public class ConexaoUrls {
 
     public String chamadaGet(String url) {
 
-        HttpParams httpParameters = new BasicHttpParams();
+        HttpParams Parametros_Conect = new BasicHttpParams();
 
-        ConnManagerParams.setTimeout(httpParameters, CONN_MGR_TIMEOUT);
-        HttpConnectionParams.setConnectionTimeout(httpParameters, CONN_TIMEOUT);
-        HttpConnectionParams.setSoTimeout(httpParameters, SO_TIMEOUT);
+        ConnManagerParams.setTimeout(Parametros_Conect, CONN_MGR_TIMEOUT);
+        HttpConnectionParams.setConnectionTimeout(Parametros_Conect, CONN_TIMEOUT);
+        HttpConnectionParams.setSoTimeout(Parametros_Conect, SO_TIMEOUT);
 
-        HttpURLConnection connection;
+        HttpURLConnection conexao;
         String retorno = "";
 
         try {
-            URL url2 = new URL(url);
-            connection = (HttpURLConnection) url2.openConnection();
-            connection.setRequestProperty("User-Agent", "swapi-android-" + Build.VERSION.RELEASE);
+            //Pegando String da Url e transformando em URL para conexao
+            URL Transform_Url = new URL(url);
 
-            int responseCode = connection.getResponseCode();
+            //Conectando no site desejado e capturando informações
+            conexao = (HttpURLConnection) Transform_Url.openConnection();
+            conexao.setRequestProperty("User-Agent", "swapi-android-" + Build.VERSION.RELEASE);
+
+            int responseCode = conexao.getResponseCode();
 
             if(responseCode == HttpURLConnection.HTTP_OK){
-                retorno = readStream(connection.getInputStream());
-                Log.v("CatalogClient", retorno);
+
+                //Transformando o retorno em uma String para salvar o arquivo
+                retorno = TraduzindoRetorno(conexao.getInputStream());
+
 
 
             }
@@ -67,26 +72,32 @@ public class ConexaoUrls {
 
     }
 
-    private String readStream(InputStream in) {
-        BufferedReader reader = null;
-        StringBuffer response = new StringBuffer();
+    //Processo que tranduz o que vem da URL
+    private String TraduzindoRetorno(InputStream in) {
+        BufferedReader Ler = null;
+        StringBuffer Traducao = new StringBuffer();
         try {
-            reader = new BufferedReader(new InputStreamReader(in));
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
+            Ler = new BufferedReader(new InputStreamReader(in));
+            String Linha = "";
+
+            while ((Linha = Ler.readLine()) != null) {
+
+                Traducao.append(Linha);
+
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (reader != null) {
+            if (Ler != null) {
                 try {
-                    reader.close();
+                    Ler.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-        return response.toString();
+
+        return Traducao.toString();
     }
 }

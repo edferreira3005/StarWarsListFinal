@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 /**
  * Created by edson.ferreira on 09/11/2017.
+ * Classe de geolocalização para ser usada ao adicionar personagens
  */
 
 public class Localizacao implements LocationListener{

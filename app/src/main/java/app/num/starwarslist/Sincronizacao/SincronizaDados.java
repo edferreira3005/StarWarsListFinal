@@ -33,6 +33,8 @@ public class SincronizaDados  extends AsyncTask<Void, Void, Void> {
                                ManipulaBanco inser, Context context, int idUs, double Latitude,
                                double Longitude){
 
+
+            //Setando variáveis necessárias para a inserção dos dados
             this.BancoDeDados = BancoDeDados;
             this.url = url;
             this.Lista_Personagem = Lista_Personagem;
@@ -48,6 +50,7 @@ public class SincronizaDados  extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... param) {
 
+            //Inserindo no Bando de dados
             ManipulaBanco inser = new ManipulaBanco();
             if(!inser.InserePersonagem(BancoDeDados, url,idUs,Latitude,Longitude,context)){
 
