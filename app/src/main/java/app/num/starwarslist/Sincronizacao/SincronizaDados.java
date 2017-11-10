@@ -54,8 +54,8 @@ public class SincronizaDados  extends AsyncTask<Void, Void, Void> {
             ManipulaBanco inser = new ManipulaBanco();
             if(!inser.InserePersonagem(BancoDeDados, url,idUs,Latitude,Longitude,context)){
 
-                MessagemErro = "QR Code Inválido.\n\n" +
-                        " Verifique se a URL está correta e se está com Internet.";
+                MessagemErro = "Invalid QR Code.\n\n" +
+                        " Make sure the URL is correct and that your're connected do the Internet.";
 
             }
 
@@ -91,8 +91,8 @@ public class SincronizaDados  extends AsyncTask<Void, Void, Void> {
         protected  void onPreExecute()
         {
 
-            carregar.setTitle("AGUARDE...");
-            carregar.setMessage("Carregando dados.");
+            carregar.setTitle("Wait...");
+            carregar.setMessage("Loading data...");
             carregar.setCancelable(false);
             carregar.show();
 

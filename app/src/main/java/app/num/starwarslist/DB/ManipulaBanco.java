@@ -54,7 +54,7 @@ public class ManipulaBanco {
 
             Date Data = Calendar.getInstance().getTime();
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd - HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy - HH:mm:ss");
             String Data_Formatada= dateFormat.format(Data);
 
 

@@ -7,14 +7,13 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import app.num.barcodescannerproject.R;
 import app.num.starwarslist.DB.CriaBanco;
 import app.num.starwarslist.DB.ManipulaBanco;
-import app.num.barcodescannerproject.R;
 
 
 public class LoginInicioActivity extends ActionBarActivity {
@@ -44,7 +43,6 @@ public class LoginInicioActivity extends ActionBarActivity {
 
             String Us = inser.Verifica_Us(BancoDeDados, Nome_Us.getText().toString().trim());
 
-            Log.i("us", Us);
 
             if (!Us.equals("SemUs")) {
 
@@ -59,8 +57,8 @@ public class LoginInicioActivity extends ActionBarActivity {
 
                     if(Nome_Us.getText().toString().isEmpty()) {
 
-                        Erro.setTitle("Atenção!");
-                        Erro.setMessage("Necessário preencher um nome de usuário antes de prosseguir.");
+                        Erro.setTitle("Attention!");
+                        Erro.setMessage("Need to fill in a username before proceeding.");
                         Erro.setNeutralButton("OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
@@ -73,8 +71,8 @@ public class LoginInicioActivity extends ActionBarActivity {
 
                     }else if(Nome_Us.getText().toString().contains(" ")){
 
-                        Erro.setTitle("Atenção!");
-                        Erro.setMessage("Não é permitido colocar espaços no nome de Usuário.");
+                        Erro.setTitle("Attention!");
+                        Erro.setMessage("No Spaces Allowed!");
                         Erro.setNeutralButton("OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {

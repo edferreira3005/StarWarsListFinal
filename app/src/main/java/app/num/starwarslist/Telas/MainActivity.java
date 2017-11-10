@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         } else {
 
-            Erro.setMessage("Sem conexão com a Internet!!\n\nA conexão é necessária para a leitura do QR Code.");
+            Erro.setMessage("No Internet connection!\n\nThe connection is required for reading the QR Code.");
             Erro.setNeutralButton("OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -133,13 +133,13 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
                 Erro = new AlertDialog.Builder(MainActivity.this);
 
-                Erro.setMessage("O GPS encontra-se desligado. Não será possível coletar dados de Localização.\n\n" +
-                                "Deseja continuar?");
+                Erro.setMessage("GPS is off. Location data can not be collected.\n\n" +
+                                "Wish to continue?\n");
 
                 final double finalLatitude = Latitude;
                 final double finalLongitude = Longitude;
 
-                Erro.setPositiveButton("Sim",
+                Erro.setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                             }
                         });
 
-                Erro.setNegativeButton("Não",
+                Erro.setNegativeButton("No",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         //Verificando se clicou 2 vezes para sair do aplicativo
         this.sair = true;
-        Toast.makeText(this, "Aperte o Botão novamente para sair do Aplicativo", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Press the Button again to exit the Application", Toast.LENGTH_SHORT).show();
 
         new Handler().postDelayed(new Runnable() {
 
