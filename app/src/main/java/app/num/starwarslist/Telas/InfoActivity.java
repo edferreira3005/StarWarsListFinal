@@ -78,8 +78,8 @@ public class InfoActivity extends AppCompatActivity {
 
             InfoBasic.moveToFirst();
 
-            tvAltura.setText(tvAltura.getText() + " " + InfoBasic.getDouble(2));
-            tvPeso.setText(tvPeso.getText() + " " + InfoBasic.getDouble(3));
+            tvAltura.setText(tvAltura.getText() + " " + InfoBasic.getString(2));
+            tvPeso.setText(tvPeso.getText() + " " + InfoBasic.getString(3));
             tvCorCabelo.setText(tvCorCabelo.getText() + " " + InfoBasic.getString(4));
             tvCorPele.setText(tvCorPele.getText() + " " + InfoBasic.getString(5));
             tvCorOlho.setText(tvCorOlho.getText() + " " + InfoBasic.getString(6));

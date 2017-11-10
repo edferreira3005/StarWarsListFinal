@@ -15,7 +15,6 @@
     android:layout_width="match_parent">
 
     <TextView
-        android:text="Informações do Personagem"
         android:textColor="@color/colorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,7 +26,7 @@
         android:textStyle="normal|bold" />
 
     <TextView
-        android:text="Altura:"
+        android:text="@string/info_altura"
         android:textColor="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +38,7 @@
         android:textStyle="normal|bold" />
 
     <TextView
-        android:text="Cabelo:"
+        android:text="@string/info_cabelo"
         android:textColor="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,7 +50,7 @@
         android:textStyle="normal|bold" />
 
     <TextView
-        android:text="Olhos:"
+        android:text="@string/info_olhos"
         android:textColor="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,7 +62,7 @@
         android:textStyle="normal|bold" />
 
     <TextView
-        android:text="Planeta Natal:"
+        android:text="@string/info_planeta"
         android:textColor="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -74,7 +73,7 @@
         android:textStyle="normal|bold" />
 
     <TextView
-        android:text="Gênero:"
+        android:text="@string/info_genero"
         android:textColor="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -85,7 +84,7 @@
         android:textStyle="normal|bold" />
 
     <TextView
-        android:text="Data de Criação"
+        android:text="@string/info_data_cria"
         android:textColor="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -97,7 +96,7 @@
         android:textStyle="normal|bold" />
 
     <TextView
-        android:text="Peso:"
+        android:text="@string/info_peso"
         android:textColor="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -107,7 +106,7 @@
         android:textStyle="normal|bold" />
 
     <TextView
-        android:text="Pele:"
+        android:text="@string/info_pele"
         android:textColor="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -119,7 +118,7 @@
         android:textStyle="normal|bold" />
 
     <TextView
-        android:text="Filmes:"
+        android:text="@string/info_filmes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvDtEdita"
@@ -133,7 +132,7 @@
         android:textColor="@color/colorPrimary" />
 
     <TextView
-        android:text="Data de Edição:"
+        android:text="@string/info_data_edit"
         android:textColor="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -145,7 +144,7 @@
         android:textStyle="normal|bold" />
 
     <TextView
-        android:text="Espécie:"
+        android:text="@string/info_especie"
         android:textColor="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -174,7 +173,7 @@
     </LinearLayout>
 
     <TextView
-        android:text="Veículos e Naves Espaciais:"
+        android:text="@string/info_nave"
         android:textStyle="normal|bold"
         android:textSize="18sp"
         android:fontFamily="serif"
@@ -200,7 +199,7 @@
     </LinearLayout>
 
     <TextView
-        android:text="*Endereço de Captura:"
+        android:text="@string/info_local_cap"
         android:textColor="@color/colorInfoLocal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -211,7 +210,7 @@
         android:id="@+id/tvGeoLocal"
         android:textStyle="normal|bold" />
     <TextView
-        android:text="*Data e Hora de Captura:"
+        android:text="@string/info_dth_cap"
         android:textColor="@color/colorInfoLocal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -222,7 +221,7 @@
         android:textStyle="normal|bold" />
 
     <TextView
-        android:text="Ano Nascimento:"
+        android:text="@string/info_ano_nasc"
         android:textColor="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

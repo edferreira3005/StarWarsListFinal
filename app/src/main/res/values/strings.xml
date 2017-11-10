@@ -1,4 +1,21 @@
 <resources>
     <string name="app_name">Star Wars List</string>
-    <string name="image_path">http://image.tmdb.org/t/p/w185//</string>
+    <string name="titulo_info">Altura:</string>
+    <string name="info_altura">Altura:</string>
+    <string name="info_cabelo">Cabelo:</string>
+    <string name="info_pele">Pele:</string>
+    <string name="info_olhos">Olhos:</string>
+    <string name="info_especie">Espécie:</string>
+    <string name="info_data_cria">Data de Criação:</string>
+    <string name="info_data_edit">Data de Edição:</string>
+    <string name="info_peso">Peso:</string>
+    <string name="info_ano_nasc">Ano Nascimento:</string>
+    <string name="info_genero">Gênero:</string>
+    <string name="info_planeta">Planeta Natal:</string>
+    <string name="info_filmes">Filmes:</string>
+    <string name="info_nave">Veículos e Naves Espaciais:</string>
+    <string name="info_local_cap">*Endereço de Captura:</string>
+    <string name="info_dth_cap">*Data e Hora de Captura:</string>
+    <string name="login_usuario">Usuário</string>
+    <string name="login_btn_entrar">Entrar</string>
 </resources>

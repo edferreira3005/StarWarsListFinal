@@ -31,7 +31,7 @@ public class LoginInicioActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_usuario);
+        setContentView(R.layout.activity_login_usuario);
         final AlertDialog.Builder Erro = new AlertDialog.Builder(LoginInicioActivity.this);
         BancoDeDados = openOrCreateDatabase(NomeBanco, Context.MODE_PRIVATE, null);
         final ManipulaBanco inser = new ManipulaBanco();
